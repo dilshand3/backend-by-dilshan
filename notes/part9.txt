@@ -1,0 +1,40 @@
+Step 1 => 
+         make a file user.controllers.js in controllers folder where we write the logic of regeistering of user 
+
+Step 2 => 
+         Here we will import asyncHandler that we write asyncHandler.js file in utils
+         make a function registerUser and in it asyncHandler and in this asyncHandler we will we make new function 
+         that send json with ok message and also export it 
+ 
+ write like this =>
+ import { asyncHandler } from "../utils/asyncHandler.js";
+
+const regesiterUser = asyncHandler(async (req,res) => {
+    res.status(200).json({
+        message : "ok"
+    })
+})
+export {regesiterUser}
+
+Step 3 => 
+         Now make a user.routes.js in routes folder there we will manage url routes for regeistering user
+        and import here router in it and make a variable of it export in it
+
+        import { Router } from "express";
+        const router = Router()
+
+        export default router 
+
+Step 4 => 
+        Now in the app.js file we will import the routes before export of app
+        like this and also declare are routes
+        import userRoutes from "./routes/user.routes.js"
+        app.use("/api/v1/users",userRouter)
+
+app.use is middlewares it will send use register 
+
+Step 5 =>
+        Now user.routes.js write this 
+        router.route("/register").post(regesiterUser)
+
+
