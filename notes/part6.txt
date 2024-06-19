@@ -1,0 +1,57 @@
+Step 1 => 
+        To upload into the files into the  cloudnery we will have to setup cloudnery in our environment we will use the command
+        npm i cloudinary //Now the cloudinary is install
+
+Step 2 => Now we will make a  file in utils name of cloudinary.js 
+
+         Here we will import the v2 from cloudinary like this and name it 
+         import { v2 as cloudinary } from "cloudinary";
+
+       Now we will import the fs from "fs" this is comes by default with node.js so we don't need to downlaoad this seprately this is uses for making read , writing , permission , etc the files
+       import it like this
+       import fs from "fs"
+
+        cloudinary.config({ //This config is copied from the cloudinary
+        cloud_name: 'druh49ljx', 
+        api_key: '593244433917352', 
+        api_secret: '5KQjLrj3JDdRma-Z7c22KkIiVh4'
+    });
+
+Step 3 => 
+        Now make 3 variable in the .env file CLOUDINARY_CLOUD_NAME,CLOUDINARY_API_KEY,CLOUDINARY_API_SECRET and write the value in it write the variable in the cloudinary.js file like this
+
+        import { v2 as cloudinary } from "cloudinary";
+        import fs from "fs"
+
+        cloudinary.config({ 
+                cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+                api_key: process.env.CLOUDINARY_API_KEY, 
+                api_secret: process.env.CLOUDINARY_API_SECRET
+              });
+
+Note this is the configeration of cloudinary it will allow us to share files
+
+Step 4 =>
+        Now we will make a function for uploading the files in cloudinary and this take arguement of localFilePath and this function will be a async await function and export it 
+        const uploadCloudnery = async (localFilePath ){}
+        export {uploadOnClodinary}
+        
+        For error handling we will use try catch in this function cause if the files upload has failed how we will show the error 
+
+       this how we will write this =>
+
+        const uploadOnClodinary = async (localFilePath) => {
+    try {
+        if (!localFilePath) return null
+        const response = await cloudinary.uploader.upload(localFilePath, {m 
+            resource_type: "auto"  //resource_type auto mean every type of file
+        })
+        console.log("file is uploaded on cloudnery ", response.url);//response.url mean file URL
+        return response;
+    } catch (error) {
+        fs.unlinkSync(localFilePath) //remove the locally saved files that failed to upload and unlink is method to delete the file and sync is method to work it as syncronous 
+        return null
+    }
+}
+
+       export {uploadOnClodinary} //export it so that we can use any other file 
