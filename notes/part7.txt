@@ -1,0 +1,27 @@
+Step 1 => 
+         Now we will use multer, downlaoad the multer package
+         npm i multer 
+         And make a file multer.middlewares.js in middlewares
+
+Step 2 =>Multer are use to save the file for some time. file will store in the diskStorage
+        
+        Now import the multer and now we will make variable storage 
+        In this variable we will use diskStorage so we will use multer.diskStorage({In this we will write our query like destination, filename})
+        In the destination we will make a function that take req,res,cb as arguement and this function save the file what destination we gave it like ./public./temp 
+        In the filename we will make a function that req,file,cb as arguement and this function will write make the name of file we also can use original name using file.originalname
+        At the end we will export it As u can see 
+         
+         this how everything will works
+
+       import multer from "multer";
+
+       const storage = multer.diskStorage({
+       destination : function (req,res,cb) {
+        cb(null,"./public/temp")
+    },
+       filename : function (req,file,cb){
+        cb(null, file.originalname)
+     }
+})
+
+export const upload = multer({storage,})  
