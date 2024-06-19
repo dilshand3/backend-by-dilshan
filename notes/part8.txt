@@ -1,0 +1,43 @@
+                                          HTTP CRASH COURSE
+
+what are the http header => 
+                          meta data that comes with file are called http header. These data are key value pair .
+                          We will get the header in both request and response
+
+http uses => authentication, caching , manage state
+
+
+request header => 
+                 The data comes from client is called request header 
+
+server header =>
+                 The data comes from server is called server header
+
+repersentation header => 
+                        if the data is commepressed or encoding it would be called repersentation header
+
+payload header => 
+                 data (its not big)
+
+
+Most common header =>
+ (a) accept = application/json (it only accept the json data)                 
+ (b) user = agent (sometimes we visiting an website and  website give us "use our app " message it commes from agent)
+ (c) Authoraigation = jwt token
+ (d) content-type = image or video or any other data
+ (e) cookie = these are basically key value pair
+ (f) cache = controlls (when to delete the data)
+
+
+ most important => **
+ 
+ http methods => basic set of operation that can be used to interact with server
+
+ (1) get = if we want to take any resource we will use the get request 
+ (2) head = it will only send the header not the message body
+ (3) option = what are the operation availble in any end point
+ (4) trace = loopback test (get some data)
+ (5) delete = it will remove the resource
+ (6) put = it will replace the resource
+ (7) patch = it will replace or edit a perticuler part of resource
+ (8) post = it will interact with resource (mostly add in resource)
