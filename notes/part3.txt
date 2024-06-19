@@ -1,0 +1,42 @@
+Step 1 => 
+        import express and make a varibale app and export this varibale (like this)
+
+        import express  from "express";
+        const app = express()
+
+        export {app}
+
+
+Step 2 =>
+        src/index.js
+        After connecting the DB we know it will return a promise so we will use the .then() and for handling the error we will use .catch() 
+        .then(()=> {  
+         app.listen(process.env.PORT || 3000, () => { //PORT or 3000  and || or gate
+        console.log(`server is running on ${process.env.PORT}`);
+    })
+})
+       .catch/((error) => {//this is for error handling
+        console.log("mongoDB connection failid due to",error);
+})
+         
+Step 3 => 
+        download these packages
+        npm i cookie-parser
+        npm i cors (This is for the use request that use in middlewares)
+
+Step 4 => 
+        Now import both in app.js
+        *Now config this cookieParser and cors in app.js*(As you can see)
+
+    (1)    app.use(cors({
+        origin : process.env.CORS_ORIGIN,  //CORS_ORIGIN=* varibale made in .env and use it in cors config in app.js
+        Credential : true
+     }))
+
+     (2)  app.use(express.json({limit : "16kb"}))//json file until 16kb so that server can't crash
+     (3)  app.use(express.urlencoded({//this for taking the data from URL
+        limit : "16kb",
+        extended : true
+     }))
+     (4)  app.use(express.static("public"))//making a folder where we can some files
+          app.use(cookieParser())      

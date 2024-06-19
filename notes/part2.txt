@@ -1,0 +1,51 @@
+connection => 
+          We can connect mongodb in 2 diffrent type, first is making a diffrent file for mongodb connection and import it main index.js file
+          And second is connect it on main index.js file
+
+Step 1 => 
+        Make a file  db/index.js
+
+Step 2 =>        
+        make PORT variable in .env file and make MONGODB_URI variable for mongodb connection string
+
+Step 3 => 
+        make database name in constants.js file and export it like this
+        "export const DB_NAME = "namehere""
+
+Step 4 => 
+      db/index.js :
+                  import mongoose from "mongoose"
+                  import { DB_NAME } from "../constants.js";
+
+                  const connectDB = async () => {
+                  try {
+                      const connectionInstance = await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
+                      console.log(`mongoDB is connected succesfully  !!! db host : ${connectionInstance.connection.host}`);
+                } catch (error) {
+                      console.log("mongoDB connected failed due to",error)
+                      process.exit(1)
+                }
+            }
+                 export default connectDB
+
+
+(1) => first we will import mongoose and DB_NAME from mongoose and constants.js file
+(2) => second we will make a function that will connect us to mongoDB and this will a async await function 
+(3) => For error handling we will write here try & catch function (As u can see how to write)
+(4) => After making function we will export it using export (As u can see that)
+
+Step 5 => 
+      src/index.js (main index.js file)
+
+       import dotenv from "dotenv"
+       import connectDB from "./db/index.js"
+       dotenv.config({
+       path:'./env'
+       })
+
+       connectDB()
+
+(1) => first we will import dotenv 
+(2) => second we will import connectDB function that we made last time
+(3) => Now we will confige the dotenv (As u can see it)
+(4) => Now cal connectDB function

@@ -1,0 +1,197 @@
+Step 1 => 
+         Make files datamodel name.model.js
+
+Step 2 => 
+         make a schema using mongoose like this
+
+         import mongoose, { Schema } from "mongoose
+
+         const nameSchema = new schema({//Here we will write our data model},{timestamps : true})
+
+         export const Name = mongoose.model.("Name",nameSchema)
+
+
+Note :- for making the searchable use index : true in database 
+
+example of model =>
+
+import mongoose, { Schema } from "mongoose";
+import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
+
+const userSchema = new Schema({
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+        trim: true,
+        index: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+        trim: true,
+    },
+    fullName: {
+        type: String,
+        required: true,
+        trim: true,
+        index: true
+    },
+    avatar: {
+        type: String, //cloudnery url
+        required: true
+    },
+    coverImage: {
+        type: String, //cloudnery url
+    },
+    watchHistory: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Video"
+        }
+    ],
+    password: {
+        type: String,
+        required: [truem, "password is required"]
+    },
+    refreshToken: {
+        type: String
+    }
+}, { timestamps: true })
+
+userSchema.pre("save", async function (next) {
+    if (!this.ismodified("password")) return next();
+
+    this.password = bcrypt.hash(this.password, 10)
+    next()
+})
+
+userSchema.methods.isPasswordCorrect = async function (password) {
+    return await bcrypt.compare(password, this.password)
+}
+
+userSchema.methods.genrateAccessToken = function () {
+    return jwt.sign({
+        _id: this._id,
+        email: this.email,
+        username: this.username,
+        fullName: this.fullName
+    },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+        })
+}
+
+userSchema.methods.genrateRefreshToken = function () {
+    return jwt.sign({
+        _id: this._id,
+    },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+        })
+}
+export const User = mongoose.model("User", userSchema)
+
+
+Step 3 =>
+        For using the true power of mongoDB , we will download the mongoose.aggrigate pagynate 
+        to download this use command = "npm i mongoose-aggrigate-paginate-v2"
+        This is not uses in the user data model
+how to use this => 
+                 import mongoose.aggrigate.paginate like this 
+                 
+                 "import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";"
+
+                 And before the export of Schmea write this so can we this and can write the query
+                 Schemaname.plugin(mongooseAggregatePaginate)
+
+Step 4 =>
+         Now install two packages and these packages are mostly for user data model
+         npm i bcrypt  //This packages is use for saving the password after bcrypting them so they save safely
+         npm i jsonwebtoken //this packages is crypting using cryptography so they save safely
+
+Step 5 => 
+         Now import both packages in user data model
+
+         import jwt from "jsonwebtoken"
+         import bcrypt from "bcrypt"
+
+Step 6 => 
+        Now we will use .pre , this is a hook for middlewares that works before saving the data so that we bcrypt the data before saving it. this works in save , validate, update , deleteone many more types etc.
+
+        To using this hook we will write Schemaname + .pre("type", async function {//here we will we write our query})
+example =>
+
+userSchema.pre("save", async function (next) { 
+    if (!this.ismodified("password")) return next();
+
+    this.password = bcrypt.hash(this.password, 10) //this how we can bcrypt our password
+    next() //this is for the next what will do response or next middlewares 
+}) 
+
+explantion => the "save" is for when user save there information and if the user is old user and he didnt not update or change his password return next(). And  if user is old or new  user and he updated his password or change or save his password  so do bcrypt it. And the 10 is round of cryptography
+
+
+Step 7 =>
+         For comparing the user input password and mongoDB save password 
+         we will make a method and in it we will make function and In this function bcrypt automatically compare it 
+         we can return the password
+
+userSchema.methods.isPasswordCorrect = async function (password) {
+    return await bcrypt.compare(password, this.password)
+}
+
+explantion =>
+             Schema of user model + method + methodname and we in this we will make async funtion 
+             and return it bcrypt.compare is function that will we will write first the user password and second 
+             we will write this.password from database
+
+
+Step 8 => 
+         Now we will use the jwt (jsonwebtoken) first we will make a varibale in .env file ACCESS_TOKEN_SECRET and we can write whatever we want . And make a one more varibale in .env file ACCESS_TOKEN_EXPIRY and we will in 1d
+         And same lke this we will make two varibale REFRESH_TOKEN_SECRET,REFRESH_TOKEN_EXPIRY 
+
+         example => 
+                   ACCESS_TOKEN_SECRET=dilshan.d3
+                   ACCESS_TOKEN_EXPIRY=1d
+                   REFRESH_TOKEN_SECRET=backendwithdilshan
+                   REFRESH_TOKEN_EXPIRY=10d
+
+step 9 =>
+         Now will make another method using the userSchema like we do with isPasswordCorrect methods and we can use async await function 
+         userSchema.methods.genrateAccessToken = function (){}
+
+         Now In this we will use the .sign() method with jwt 
+         jwt.sign({ }) this required playload and ACCESS_TOKEN_SECRET and ACCESS_TOKEN_EXPIRY And Id we will get from the mongoDB And return it all.This is how can we write it
+
+     (1)    userSchema.methods.genrateAccessToken = function () {
+         return jwt.sign({
+        _id: this._id,
+        email: this.email,
+        username: this.username,
+        fullName: this.fullName
+    },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+        })
+}
+
+
+(2) The genrateRefreshToken is similiar to genrateAccessToken so it same value but it refres again and again so it contain less value like this
+
+        userSchema.methods.genrateRefreshToken = function () {
+    return jwt.sign({
+        _id: this._id,
+    },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+        })
+}

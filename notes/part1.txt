@@ -1,0 +1,21 @@
+Step 1 => 
+    download package.json = npm init -y
+    download nodemon = npm i -D nodemon (it will reload the server after changes automatically)
+    download express,mongoose,dotenv = npm i express dotenv mongoose
+
+
+Step 2 => 
+    Making files and folder for backend => 
+    
+    (1) Public>temp>.gitkeep
+    (2) .gitkeep
+    (3) .env 
+    (4) src>app.js , index.js , constants.js , controllers , db , middlewares , models , routes , utils
+
+
+Step  3 => 
+    package.json editing
+     "type" : "module"
+
+    Script = "dev" : "nodemon -r dotenv/config --experimental-json-modules src/index.js"    
+    

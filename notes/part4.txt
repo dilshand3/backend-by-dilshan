@@ -1,0 +1,60 @@
+Step 1 => 
+        Now make a file in utils asyncHandler.js 
+
+        write this 
+         
+         const asyncHandler = (requestHandler) => {
+         (req, res, next) => {
+         Promise.resolve(requestHandler(req, res, next)).
+         catch((err) => next(err))
+    }
+}
+
+
+export { asyncHandler }
+
+asyncHandler is method that take requestHandler as arguement its use for error handling
+after writing this export the asyncHandler (As you can see)
+
+
+Step 2 => 
+         Now make a file in utils apierror.js
+         Write this 
+
+         class APIERROR extends Error {
+         constructor(
+        statucode,
+        message = "Something went wrong",
+        errors = [],
+        stack = ""
+    ){
+        super(message)
+        this.statucode = statucode
+        this.data = null
+        this.message = message
+        this.succes = false
+        this.errors = errors
+
+        if (stack) {
+            this.stack = stack
+        } else {
+            Error.captureStackTrace(this, this.constructor)
+        }
+    }
+}
+
+export {APIERROR}
+
+
+Step 3 => 
+         Now make a file ApiRespone.js in utils folder
+         write this 
+
+         class ApiResponse {
+         constructor(statusCode,data,message = "Succes"){
+         this.statusCode = statusCode
+         this.data = data
+         this.message = message
+         this.succes = statusCode<400
+     }
+ }

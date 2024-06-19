@@ -3,7 +3,7 @@ class APIERROR extends Error {
         statucode,
         message = "Something went wrong",
         errors = [],
-        statck = ""
+        stack = ""
     ){
         super(message)
         this.statucode = statucode
@@ -12,8 +12,8 @@ class APIERROR extends Error {
         this.succes = false
         this.errors = errors
 
-        if (statck) {
-            this.stack = statck
+        if (stack) {
+            this.stack = stack
         } else {
             Error.captureStackTrace(this, this.constructor)
         }
