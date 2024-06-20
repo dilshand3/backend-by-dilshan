@@ -1,4 +1,4 @@
-class APIERROR extends Error {
+class APIError extends Error {
     constructor(
         statucode,
         message = "Something went wrong",
@@ -20,4 +20,4 @@ class APIERROR extends Error {
     }
 }
 
-export {APIERROR}
+export {APIError}
