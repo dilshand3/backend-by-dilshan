@@ -104,7 +104,7 @@ Step 6 =>
       "-password -refreshToken"
    )
 
-   if (createduser) {
+   if (!createduser) {
       throw new APIError(500,"something went wrong while registering the user")
    }
 

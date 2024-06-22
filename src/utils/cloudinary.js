@@ -14,7 +14,8 @@ const uploadOnClodinary = async (localFilePath) => {
             resource_type: "auto"
         })
         console.log("file is uploaded on cloudnery ", response.url);
-        return response;
+        fs.unlinkSync(localFilePath)
+        return response;  
     } catch (error) {
         fs.unlinkSync(localFilePath) //remove the locally saved files that failed to upload
         return null
